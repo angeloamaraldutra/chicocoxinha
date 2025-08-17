@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Gastos - Empresa de Salgados</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a2a3a, #2a3b4c);
+            color: #e0e1dd;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 15px 0;
+            background: rgba(30, 45, 65, 0.8);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #415a77;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #78a9ff;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .form-section {
+            background: rgba(30, 45, 65, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #415a77;
+        }
+
+        .form-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #78a9ff;
+            text-align: center;
+        }
+
+        form {
+            display: grid;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #aaccff;
+            font-size: 0.9rem;
+        }
+
+        select, input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #415a77;
+            background: #1b263b;
+            color: #e0e1dd;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #78a9ff;
+            box-shadow: 0 0 0 3px rgba(120, 169, 255, 0.3);
+        }
+
+        button {
+            background: linear-gradient(to right, #0077b6, #0096c7);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 8px;
+            box-shadow: 0 2px 4px rgba(0, 119, 182, 0.3);
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #0096c7, #00b4d8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 150, 199, 0.4);
+        }
+
+        .data-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tabela-container {
+            background: rgba(30, 45, 65, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #415a77;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .tabela-container h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #78a9ff;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th {
+            background: #1b3a5e;
+            padding: 12px 8px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #415a77;
+            font-size: 0.85rem;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(27, 38, 59, 0.5);
+        }
+
+        tr:hover {
+            background: rgba(65, 90, 119, 0.4);
+        }
+
+        .valor-cell {
+            color: #ff9f1c;
+            font-weight: 600;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            margin-right: 5px;
+        }
+
+        .edit-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .edit-btn:hover {
+            background: #2980b9;
+        }
+
+        .graficos {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .grafico-container {
+            background: rgba(30, 45, 65, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid #415a77;
+            height: 280px;
+        }
+
+        .grafico-container h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #78a9ff;
+            text-align: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: calc(100% - 25px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: #2ecc71;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            font-size: 0.9rem;
+            max-width: 90%;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #e74c3c;
+        }
+
+        .saldo-info {
+            margin-top: 8px;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .saldo-valor {
+            font-weight: bold;
+            color: #2ecc71;
+        }
+
+        .saldo-negativo {
+            color: #e74c3c;
+        }
+
+        .provisionado-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gastos-tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .gasto-tab {
+            padding: 8px 15px;
+            cursor: pointer;
+            background: rgba(65, 90, 119, 0.5);
+            border-radius: 8px;
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+
+        .gasto-tab.active {
+            background: rgba(25, 118, 210, 0.7);
+            font-weight: 600;
+        }
+
+        /* Responsividade para celular */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .graficos {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 0.75rem;
+            }
+            
+            th, td {
+                padding: 8px 5px;
+            }
+            
+            .delete-btn, .edit-btn {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Estilos para informações de usuário */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8rem;
+            color: #aaccff;
+        }
+        
+        .user-icon {
+            color: #78a9ff;
+        }
+        
+        .date-info {
+            font-size: 0.75rem;
+            color: #8d9dbd;
+        }
+        
+        /* Modal de edição */
+        .edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+        
+        .edit-modal-content {
+            background: #1b263b;
+            border-radius: 15px;
+            padding: 20px;
+            width: 95%;
+            max-width: 500px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .edit-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .edit-modal-header h3 {
+            color: #78a9ff;
+        }
+        
+        .edit-modal-body {
+            display: grid;
+            gap: 12px;
+        }
+
+        .resumo-verba {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .card-verba {
+            background: rgba(30, 45, 65, 0.8);
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #415a77;
+        }
+
+        .card-verba.saldo {
+            background: rgba(46, 204, 113, 0.1);
+            border-color: #2ecc71;
+        }
+
+        .card-label {
+            font-size: 0.8rem;
+            color: #aaccff;
+            margin-bottom: 5px;
+        }
+
+        .card-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 10px;
+        }
+        
+        .logo-container {
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            color: #ff9f1c;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-relatorio {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-relatorio:hover {
+            background: linear-gradient(to right, #219653, #27ae60);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo-container">
+                    <i class="fas fa-bread-slice logo"></i>
+                </div>
+                <h1>Controle de Gastos</h1>
+                <h2>Empresa de Salgados</h2>
+                
+                <div id="contaInfo" style="display: none;">
+                    <div class="resumo-verba">
+                        <div class="card-verba">
+                            <div class="card-label">Saldo Total</div>
+                            <div class="card-value" id="cardVerbaTotal">R$ 0,00</div>
+                        </div>
+                        <div class="card-verba">
+                            <div class="card-label">Gastos</div>
+                            <div class="card-value" id="cardGastos">R$ 0,00</div>
+                        </div>
+                        <div class="card-verba">
+                            <div class="card-label">Provisionado</div>
+                            <div class="card-value" id="cardProvisionado">R$ 0,00</div>
+                        </div>
+                        <div class="card-verba saldo">
+                            <div class="card-label">Saldo Disponível</div>
+                            <div class="card-value" id="cardSaldoDisponivel">R$ 0,00</div>
+                        </div>
+                    </div>
+                    <div class="saldo-info">
+                        Saldo Restante: <span class="saldo-valor" id="saldoRestante">R$ 0,00</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn-relatorio" onclick="gerarRelatorioPDF()">
+                            <i class="fas fa-file-pdf"></i> Relatório
+                        </button>
+                        <button class="btn-relatorio" onclick="atualizarSaldoTotal()">
+                            <i class="fas fa-edit"></i> Editar Saldo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <div class="form-section">
+                <h3>Registrar Nova Compra</h3>
+                <form id="formRegistro">
+                    <div class="form-group">
+                        <label for="tipoCompra">Categoria</label>
+                        <select id="tipoCompra" required>
+                            <option value="">Selecione a categoria</option>
+                            <option>Matéria-prima</option>
+                            <option>Embalagens</option>
+                            <option>Equipamentos</option>
+                            <option>Manutenção</option>
+                            <option>Transporte</option>
+                            <option>Marketing</option>
+                            <option>Outros</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nomeProduto">Produto Comprado</label>
+                        <input type="text" id="nomeProduto" placeholder="Ex: Farinha de trigo" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nomeEmpresa">Fornecedor</label>
+                            <input type="text" id="nomeEmpresa" placeholder="Nome do fornecedor" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="valorPago">Valor (R$)</label>
+                            <input type="text" id="valorPago" placeholder="Digite o valor" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="dataCompra">Data da Compra</label>
+                            <input type="date" id="dataCompra" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="provisionado" class="provisionado-check">
+                            <input type="checkbox" id="provisionado" name="provisionado">
+                            Compra Provisionada
+                        </label>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="usuarioCadastro">Usuário</label>
+                            <input type="text" id="usuarioCadastro" placeholder="Seu nome" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit">
+                        <i class="fas fa-plus-circle"></i> Adicionar Compra
+                    </button>
+                </form>
+            </div>
+            
+            <div class="data-section">
+                <div class="gastos-tabs">
+                    <div class="gasto-tab active" data-tipo="gastos">Despesas Registradas</div>
+                    <div class="gasto-tab" data-tipo="provisionados">Provisionados Registrados</div>
+                </div>
+                
+                <div class="tabela-container">
+                    <h3 id="tituloTabela">Despesas Registradas</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Categoria</th>
+                                <th>Produto</th>
+                                <th>Fornecedor</th>
+                                <th>Valor (R$)</th>
+                                <th>Data Compra</th>
+                                <th>Cadastrado por</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaRegistros">
+                            <!-- Dados serão preenchidos aqui -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="graficos">
+                    <div class="grafico-container">
+                        <h3>Distribuição do Saldo</h3>
+                        <canvas id="graficoVerba"></canvas>
+                    </div>
+                    <div class="grafico-container">
+                        <h3>Gastos por Categoria</h3>
+                        <canvas id="graficoCategorias"></canvas>
+                    </div>
+                    <div class="grafico-container">
+                        <h3>Gastos por Fornecedor</h3>
+                        <canvas id="graficoEmpresas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de Edição de Compra -->
+        <div class="edit-modal" id="editModal">
+            <div class="edit-modal-content">
+                <div class="edit-modal-header">
+                    <h3>Editar Compra</h3>
+                    <button class="close-modal" id="closeEditModal">&times;</button>
+                </div>
+                <div class="edit-modal-body" id="editModalBody">
+                    <!-- Conteúdo será preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal" id="editVerbaModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Editar Saldo Total</h3>
+                    <button class="close-modal" id="closeEditVerba">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="novaVerba">Novo Saldo Total (R$)</label>
+                        <input type="text" id="novaVerba" placeholder="Digite o novo valor">
+                    </div>
+                    <button type="button" id="btnSalvarVerba">
+                        <i class="fas fa-save"></i> Salvar Alteração
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notification" id="notification">Dados salvos com sucesso!</div>
+        
+        <div class="sync-status" id="syncStatus">
+            <i class="fas fa-sync-alt sync-icon" id="syncIcon"></i>
+            <span id="syncText">Sincronizando dados...</span>
+        </div>
+        
+        <footer>
+            Sistema de Controle de Gastos &copy; Empresa de Salgados 2025
+        </footer>
+    </div>
+    <script>
+        // Configuração do Firebase fornecida
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZQJj83vCd7KgNDvggIdgRg1BvgYgYr_M",
+            authDomain: "salg-45c7c.firebaseapp.com",
+            projectId: "salg-45c7c",
+            storageBucket: "salg-45c7c.firebasestorage.app",
+            messagingSenderId: "1093793839140",
+            appId: "1:1093793839140:web:d0050e2f866faf612a80b1",
+            measurementId: "G-R965S9V37W"
+        };
+
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Referência ao documento no Firestore
+        const docRef = db.collection("estoque").doc("produtosLista");
+
+        // Estrutura de dados para o sistema
+        let dados = {
+            saldoTotal: 10000, // Saldo inicial
+            gastos: [],
+            provisionados: []
+        };
+
+        // Variáveis para controle
+        let totalGasto = 0;
+        let gastosPorCategoria = {};
+        let gastosPorEmpresa = {};
+        let graficoVerba, graficoCategorias, graficoEmpresas;
+        let tipoGastoAtivo = 'gastos'; // 'gastos' ou 'provisionados'
+        
+        // Elementos DOM
+        const contaInfo = document.getElementById('contaInfo');
+        const tabela = document.getElementById('tabelaRegistros');
+        const notification = document.getElementById('notification');
+        const ctxVerba = document.getElementById('graficoVerba').getContext('2d');
+        const ctxCategorias = document.getElementById('graficoCategorias').getContext('2d');
+        const ctxEmpresas = document.getElementById('graficoEmpresas').getContext('2d');
+        const syncStatus = document.getElementById('syncStatus');
+        const syncText = document.getElementById('syncText');
+        const syncIcon = document.getElementById('syncIcon');
+        const gastoTabs = document.querySelectorAll('.gasto-tab');
+        const tituloTabela = document.getElementById('tituloTabela');
+        const editModal = document.getElementById('editModal');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const editModalBody = document.getElementById('editModalBody');
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Definir data atual para o input de data
+            const hoje = new Date().toISOString().split('T')[0];
+            document.getElementById('dataCompra').value = hoje;
+            
+            // Definir usuário atual
+            document.getElementById('usuarioCadastro').value = "Usuário Atual";
+            
+            mostrarStatusSincronizacao('Conectando ao Firebase...');
+            
+            // Configurar listener em tempo real
+            configurarRealtimeListener();
+            
+            // Configurar eventos
+            configurarEventos();
+            
+            // Configurar fechar modal de edição
+            closeEditModal.addEventListener('click', () => {
+                editModal.style.display = 'none';
+            });
+            
+            // Mostrar informações da conta
+            contaInfo.style.display = 'block';
+        });
+        
+        // Configurar listener em tempo real
+        function configurarRealtimeListener() {
+            docRef.onSnapshot((doc) => {
+                mostrarStatusSincronizacao('Atualizando dados...');
+                
+                if (doc.exists) {
+                    const dadosDoBanco = doc.data();
+                    
+                    if (dadosDoBanco) {
+                        dados = {
+                            saldoTotal: dadosDoBanco.saldoTotal || 0,
+                            gastos: dadosDoBanco.gastos || [],
+                            provisionados: dadosDoBanco.provisionados || []
+                        };
+                        
+                        mostrarNotificacao('Dados atualizados em tempo real!');
+                    } else {
+                        console.warn("Estrutura de dados inválida.");
+                    }
+                } else {
+                    console.log("Documento não encontrado, criando novo.");
+                    // Criar documento se não existir
+                    docRef.set(dados).then(() => {
+                        mostrarNotificacao('Novo banco de dados criado!');
+                    });
+                }
+                
+                // Atualizar interface
+                atualizarUI();
+                ocultarStatusSincronizacao();
+                
+            }, (error) => {
+                console.error('Erro no listener:', error);
+                mostrarNotificacao('Erro na conexão em tempo real.', true);
+                ocultarStatusSincronizacao();
+            });
+        }
+
+        // Funções para sincronização
+        function mostrarStatusSincronizacao(mensagem) {
+            syncStatus.style.display = 'flex';
+            syncText.textContent = mensagem;
+            syncIcon.style.animation = 'spin 2s linear infinite';
+        }
+        
+        function ocultarStatusSincronizacao() {
+            setTimeout(() => {
+                syncStatus.style.display = 'none';
+            }, 1000);
+        }
+        
+        // Salvar dados no Firebase
+        async function salvarDadosFirebase() {
+            mostrarStatusSincronizacao('Salvando dados...');
+            try {
+                await docRef.set(dados);
+            } catch (error) {
+                console.error('Erro ao salvar dados:', error);
+                mostrarNotificacao('Erro ao salvar dados.', true);
+            } finally {
+                ocultarStatusSincronizacao();
+            }
+        }
+        
+        function configurarEventos() {
+            // Máscara para os campos de valor
+            document.getElementById('valorPago').addEventListener('input', formatarMoeda);
+            document.getElementById('novaVerba').addEventListener('input', formatarMoeda);
+
+            // Evento de submit do formulário de gastos
+            document.getElementById('formRegistro').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await adicionarCompra(e);
+            });
+            
+            // Eventos do modal de edição
+            document.getElementById('closeEditVerba').addEventListener('click', function() {
+                document.getElementById('editVerbaModal').style.display = 'none';
+            });
+            
+            document.getElementById('btnSalvarVerba').addEventListener('click', async () => {
+            await atualizarSaldoTotalFirebase(); // Chamada corrigida
+        });
+            
+            // Evento para troca de abas de gastos/provisionados
+            gastoTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tipoGastoAtivo = this.getAttribute('data-tipo');
+                    
+                    // Atualiza a classe ativa
+                    gastoTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Atualiza o título da tabela
+                    tituloTabela.textContent = tipoGastoAtivo === 'gastos' 
+                        ? 'Despesas Registradas' 
+                        : 'Provisionados Registrados';
+                    
+                    // Atualiza a tabela
+                    atualizarUI();
+                });
+            });
+        }
+        
+        function formatarMoeda() {
+            let valor = this.value.replace(/\D/g, '');
+            valor = (valor / 100).toFixed(2) + '';
+            valor = valor.replace('.', ',');
+            valor = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            this.value = 'R$ ' + valor;
+        }
+        
+        function mostrarNotificacao(mensagem, isError = false) {
+            notification.textContent = mensagem;
+            notification.classList.remove('error');
+            
+            if (isError) {
+                notification.classList.add('error');
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        function adicionarLinhaTabela(categoria, produto, empresa, valor, dataCompra, usuario, index, isProvisionado) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${categoria}</td>
+                <td>${produto}</td>
+                <td>${empresa}</td>
+                <td class="valor-cell">R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                <td>${formatarData(dataCompra)}</td>
+                <td>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle user-icon"></i>
+                        ${usuario}
+                    </div>
+                </td>
+                <td>
+                    <button class="edit-btn" onclick="editarCompra(${index}, ${isProvisionado})">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="delete-btn" onclick="deletarCompra(${index}, ${isProvisionado})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tabela.appendChild(row);
+        }
+        
+        function formatarData(dataString) {
+            if (!dataString) return '';
+            const data = new Date(dataString);
+            return data.toLocaleDateString('pt-BR');
+        }
+        
+        function atualizarCardsResumo() {
+            const totalGastos = dados.gastos.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const totalProvisionado = dados.provisionados.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const saldoDisponivel = dados.saldoTotal - (totalGastos + totalProvisionado);
+            
+            document.getElementById('cardVerbaTotal').textContent = 'R$ ' + dados.saldoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            document.getElementById('cardGastos').textContent = 'R$ ' + totalGastos.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            document.getElementById('cardProvisionado').textContent = 'R$ ' + totalProvisionado.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            document.getElementById('cardSaldoDisponivel').textContent = 'R$ ' + saldoDisponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            
+            // Atualizar saldo restante
+            saldoRestanteElement.textContent = 'R$ ' + saldoDisponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            saldoRestanteElement.className = saldoDisponivel < 0 ? 'saldo-valor saldo-negativo' : 'saldo-valor';
+        }
+        
+        function atualizarGraficos() {
+            const totalGastos = dados.gastos.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const totalProvisionado = dados.provisionados.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const saldoRestante = dados.saldoTotal - (totalGastos + totalProvisionado);
+            
+            // Gráfico Gasto x Provisionado x Saldo
+            if (graficoVerba) graficoVerba.destroy();
+            graficoVerba = new Chart(ctxVerba, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Gastos', 'Provisionados', 'Saldo Restante'],
+                    datasets: [{
+                        data: [totalGastos, totalProvisionado, saldoRestante],
+                        backgroundColor: ['#e74c3c', '#f39c12', '#2ecc71'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#e0e1dd', font: { size: 14 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `R$ ${context.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Calcular gastos por categoria
+            gastosPorCategoria = {};
+            dados.gastos.forEach(gasto => {
+                if (!gastosPorCategoria[gasto.categoria]) {
+                    gastosPorCategoria[gasto.categoria] = 0;
+                }
+                gastosPorCategoria[gasto.categoria] += gasto.valor;
+            });
+            
+            // Gráfico por Categoria
+            if (graficoCategorias) graficoCategorias.destroy();
+            graficoCategorias = new Chart(ctxCategorias, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(gastosPorCategoria),
+                    datasets: [{
+                        label: 'Valor por Categoria (R$)',
+                        data: Object.values(gastosPorCategoria),
+                        backgroundColor: '#3498db',
+                        borderWidth: 0,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `R$ ${context.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#aaccff',
+                                callback: value => 'R$ ' + value.toLocaleString('pt-BR')
+                            },
+                            grid: { color: 'rgba(65, 90, 119, 0.5)' }
+                        },
+                        x: {
+                            ticks: { color: '#aaccff' },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+            
+            // Calcular gastos por empresa
+            gastosPorEmpresa = {};
+            dados.gastos.forEach(gasto => {
+                if (!gastosPorEmpresa[gasto.empresa]) {
+                    gastosPorEmpresa[gasto.empresa] = 0;
+                }
+                gastosPorEmpresa[gasto.empresa] += gasto.valor;
+            });
+            
+            // Gráfico por Empresa
+            if (graficoEmpresas) graficoEmpresas.destroy();
+            graficoEmpresas = new Chart(ctxEmpresas, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(gastosPorEmpresa),
+                    datasets: [{
+                        label: 'Valor por Fornecedor (R$)',
+                        data: Object.values(gastosPorEmpresa),
+                        backgroundColor: [
+                            '#f39c12', '#9b59b6', '#1abc9c', 
+                            '#d35400', '#34495e', '#16a085'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#e0e1dd', font: { size: 12 } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: R$ ${context.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function atualizarUI() {
+            // Limpar tabela
+            tabela.innerHTML = '';
+            
+            // Filtrar gastos conforme aba selecionada
+            let gastos = tipoGastoAtivo === 'gastos' ? dados.gastos : dados.provisionados;
+            
+            // Processar cada gasto
+            gastos.forEach((gasto, index) => {
+                // Adicionar na tabela
+                adicionarLinhaTabela(
+                    gasto.categoria, 
+                    gasto.produto, 
+                    gasto.empresa, 
+                    gasto.valor, 
+                    gasto.dataCompra,
+                    gasto.usuarioCadastro || 'Não informado',
+                    index,
+                    tipoGastoAtivo === 'provisionados'
+                );
+            });
+            
+            // Atualizar gráficos
+            atualizarGraficos();
+            atualizarCardsResumo();
+        }
+        
+        async function adicionarCompra(e) {
+            e.preventDefault();
+            
+            const categoria = document.getElementById('tipoCompra').value;
+            const produto = document.getElementById('nomeProduto').value;
+            const empresa = document.getElementById('nomeEmpresa').value;
+            const valorStr = document.getElementById('valorPago').value.replace(/[R$\s.]/g, '').replace(',', '.');
+            const valor = parseFloat(valorStr);
+            const dataCompra = document.getElementById('dataCompra').value;
+            const provisionado = document.getElementById('provisionado').checked;
+            const usuarioCadastro = document.getElementById('usuarioCadastro').value;
+            
+            if (valor <= 0 || isNaN(valor)) {
+                mostrarNotificacao('Digite um valor válido.', true);
+                return;
+            }
+            
+            // Verificar se o valor excede o saldo disponível
+            const totalGastos = dados.gastos.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const totalProvisionados = dados.provisionados.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const saldoDisponivel = dados.saldoTotal - (totalGastos + totalProvisionados);
+            
+            if (valor > saldoDisponivel) {
+                mostrarNotificacao('Valor excede o saldo disponível!', true);
+                return;
+            }
+            
+            // Criar objeto de compra
+            const compra = { 
+                categoria: categoria, 
+                produto: produto,
+                empresa: empresa, 
+                valor: valor,
+                dataCadastro: new Date().toISOString(),
+                dataCompra: dataCompra,
+                usuarioCadastro: usuarioCadastro
+            };
+            
+            // Adicionar ao array correto
+            if (provisionado) {
+                dados.provisionados.push(compra);
+            } else {
+                dados.gastos.push(compra);
+            }
+            
+            // Salvar no Firebase
+            await salvarDadosFirebase();
+            
+            // Mostrar notificação
+            mostrarNotificacao('Compra registrada com sucesso!');
+            
+            // Limpar o formulário
+            e.target.reset();
+            document.getElementById('usuarioCadastro').value = usuarioCadastro;
+            document.getElementById('dataCompra').value = new Date().toISOString().split('T')[0];
+        }
+        
+        async function deletarCompra(index, isProvisionado) {
+            // Remover o gasto do array correto
+            if (isProvisionado) {
+                dados.provisionados.splice(index, 1);
+            } else {
+                dados.gastos.splice(index, 1);
+            }
+            
+            // Salvar no Firebase
+            await salvarDadosFirebase();
+            
+            // Mostrar notificação
+            mostrarNotificacao('Compra removida com sucesso!');
+        }
+        
+        function editarCompra(index, isProvisionado) {
+            const compra = isProvisionado ? dados.provisionados[index] : dados.gastos[index];
+            if (!compra) return;
+            
+            // Preencher o modal de edição
+            editModalBody.innerHTML = `
+                <div class="form-group">
+                    <label for="editTipoCompra">Categoria</label>
+                    <select id="editTipoCompra" required>
+                        <option value="">Selecione a categoria</option>
+                        <option ${compra.categoria === 'Matéria-prima' ? 'selected' : ''}>Matéria-prima</option>
+                        <option ${compra.categoria === 'Embalagens' ? 'selected' : ''}>Embalagens</option>
+                        <option ${compra.categoria === 'Equipamentos' ? 'selected' : ''}>Equipamentos</option>
+                        <option ${compra.categoria === 'Manutenção' ? 'selected' : ''}>Manutenção</option>
+                        <option ${compra.categoria === 'Transporte' ? 'selected' : ''}>Transporte</option>
+                        <option ${compra.categoria === 'Marketing' ? 'selected' : ''}>Marketing</option>
+                        <option ${compra.categoria === 'Outros' ? 'selected' : ''}>Outros</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editNomeProduto">Produto Comprado</label>
+                    <input type="text" id="editNomeProduto" value="${compra.produto}" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editNomeEmpresa">Fornecedor</label>
+                        <input type="text" id="editNomeEmpresa" value="${compra.empresa}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="editValorPago">Valor (R$)</label>
+                        <input type="text" id="editValorPago" value="R$ ${compra.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editDataCompra">Data da Compra</label>
+                        <input type="date" id="editDataCompra" value="${compra.dataCompra.split('T')[0]}" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editUsuarioCadastro">Usuário</label>
+                        <input type="text" id="editUsuarioCadastro" value="${compra.usuarioCadastro}" required>
+                    </div>
+                </div>
+                
+                <button type="button" id="btnAtualizarCompra" data-index="${index}" data-provisionado="${isProvisionado}">
+                    <i class="fas fa-save"></i> Atualizar Compra
+                </button>
+            `;
+            
+            // Configurar máscara de valor
+            document.getElementById('editValorPago').addEventListener('input', formatarMoeda);
+            
+            // Configurar evento de atualização
+            document.getElementById('btnAtualizarCompra').addEventListener('click', async function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                const isProvisionado = this.getAttribute('data-provisionado') === 'true';
+                await atualizarCompra(index, isProvisionado);
+            });
+            
+            // Exibir o modal
+            editModal.style.display = 'flex';
+        }
+        
+        async function atualizarCompra(index, isProvisionado) {
+            const categoria = document.getElementById('editTipoCompra').value;
+            const produto = document.getElementById('editNomeProduto').value;
+            const empresa = document.getElementById('editNomeEmpresa').value;
+            const valorStr = document.getElementById('editValorPago').value.replace(/[R$\s.]/g, '').replace(',', '.');
+            const valor = parseFloat(valorStr);
+            const dataCompra = document.getElementById('editDataCompra').value;
+            const usuarioCadastro = document.getElementById('editUsuarioCadastro').value;
+            
+            if (valor <= 0 || isNaN(valor)) {
+                mostrarNotificacao('Digite um valor válido.', true);
+                return;
+            }
+            
+            // Atualizar a compra
+            const compraAtualizada = { 
+                categoria: categoria, 
+                produto: produto,
+                empresa: empresa, 
+                valor: valor,
+                dataCompra: dataCompra,
+                usuarioCadastro: usuarioCadastro
+            };
+            
+            // Atualizar no array correto
+            if (isProvisionado) {
+                dados.provisionados[index] = compraAtualizada;
+            } else {
+                dados.gastos[index] = compraAtualizada;
+            }
+            
+            // Salvar no Firebase
+            await salvarDadosFirebase();
+            
+            // Fechar o modal
+            editModal.style.display = 'none';
+            
+            // Mostrar notificação
+            mostrarNotificacao('Compra atualizada com sucesso!');
+        }
+        
+        function atualizarSaldoTotal() {
+            // Preencher o modal com o saldo atual
+            document.getElementById('novaVerba').value = 'R$ ' + dados.saldoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+            // Exibir o modal
+            document.getElementById('editVerbaModal').style.display = 'flex';
+        }
+        
+        async function atualizarSaldoTotalFirebase() {
+            const valorStr = document.getElementById('novaVerba').value.replace(/[R$\s.]/g, '').replace(',', '.');
+            const novoSaldo = parseFloat(valorStr);
+            
+            if (novoSaldo <= 0 || isNaN(novoSaldo)) {
+                mostrarNotificacao('Digite um valor válido para o saldo.', true);
+                return;
+            }
+            
+            // Atualizar saldo total
+            dados.saldoTotal = novoSaldo;
+            
+            // Salvar no Firebase
+            await salvarDadosFirebase();
+            
+            // Fechar modal e limpar campo - CORREÇÃO ADICIONADA
+            document.getElementById('editVerbaModal').style.display = 'none';
+            document.getElementById('novaVerba').value = '';
+            
+            // Mostrar notificação
+            mostrarNotificacao('Saldo atualizado com sucesso!');
+        }
+        
+        // Função para gerar relatório em PDF
+        function gerarRelatorioPDF() {
+            const totalGastos = dados.gastos.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const totalProvisionado = dados.provisionados.reduce((sum, gasto) => sum + gasto.valor, 0);
+            const saldoDisponivel = dados.saldoTotal - (totalGastos + totalProvisionado);
+
+            // Criar conteúdo do relatório
+            let conteudo = `
+                <style>
+                    .relatorio { font-family: Arial, sans-serif; }
+                    h1 { color: #2c3e50; text-align: center; }
+                    .info { margin: 20px 0; }
+                    .info-item { margin: 5px 0; }
+                    .destaque { font-weight: bold; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+                <div class="relatorio">
+                    <h1>Relatório de Gastos</h1>
+                    <div class="info">
+                        <div class="info-item"><span class="destaque">Empresa:</span> Empresa de Salgados</div>
+                        <div class="info-item"><span class="destaque">Data:</span> ${new Date().toLocaleDateString('pt-BR')}</div>
+                        <div class="info-item"><span class="destaque">Saldo Total:</span> R$ ${dados.saldoTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                        <div class="info-item"><span class="destaque">Gastos:</span> R$ ${totalGastos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                        <div class="info-item"><span class="destaque">Provisionados:</span> R$ ${totalProvisionado.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                        <div class="info-item"><span class="destaque">Saldo Disponível:</span> R$ ${saldoDisponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
+                    </div>
+                    
+                    <h2>Gastos Registrados</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Categoria</th>
+                                <th>Produto</th>
+                                <th>Fornecedor</th>
+                                <th>Valor (R$)</th>
+                                <th>Data Compra</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            dados.gastos.forEach(gasto => {
+                conteudo += `
+                    <tr>
+                        <td>${gasto.categoria}</td>
+                        <td>${gasto.produto}</td>
+                        <td>${gasto.empresa}</td>
+                        <td>R$ ${gasto.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                        <td>${formatarData(gasto.dataCompra)}</td>
+                    </tr>
+                `;
+            });
+            
+            conteudo += `
+                        </tbody>
+                    </table>
+                    
+                    <h2>Provisionados Registrados</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Categoria</th>
+                                <th>Produto</th>
+                                <th>Fornecedor</th>
+                                <th>Valor (R$)</th>
+                                <th>Data Compra</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            dados.provisionados.forEach(gasto => {
+                conteudo += `
+                    <tr>
+                        <td>${gasto.categoria}</td>
+                        <td>${gasto.produto}</td>
+                        <td>${gasto.empresa}</td>
+                        <td>R$ ${gasto.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+                        <td>${formatarData(gasto.dataCompra)}</td>
+                    </tr>
+                `;
+            });
+            
+            conteudo += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            // Abrir nova janela com o relatório
+            const janelaRelatorio = window.open('', '_blank');
+            janelaRelatorio.document.write(conteudo);
+            janelaRelatorio.document.close();
+        }
+        
+        // Atribuir função global para o botão
+        window.atualizarSaldoTotal = atualizarSaldoTotal;
+        window.gerarRelatorioPDF = gerarRelatorioPDF;
+        window.editarCompra = editarCompra;
+        window.deletarCompra = deletarCompra;
+    </script>
+</body>
+</html>
