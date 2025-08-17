@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Gastos - Empresa de Salgados</title>
+    <title>Controle de Gastos - Chico Coxinha</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
@@ -65,7 +65,47 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             border: 1px solid #415a77;
         }
+/* Adicionar ao CSS existente */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
 
+.modal-content {
+    background: #1b263b;
+    border-radius: 15px;
+    padding: 20px;
+    width: 95%;
+    max-width: 500px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.modal-header h3 {
+    color: #78a9ff;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: #e0e1dd;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
         .form-section h3 {
             font-size: 1.4rem;
             margin-bottom: 15px;
