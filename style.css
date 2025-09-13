@@ -20,10 +20,11 @@ body {
     color: var(--cor-texto);
 }
 
+/* --- ALTERAÇÃO PRINCIPAL AQUI --- */
 .container {
-    max-width: 1200px;
+    max-width: 980px; /* Reduzido de 1200px para centralizar mais o conteúdo */
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 25px; /* Um pouco mais de padding para telas menores */
 }
 
 /* --- SEÇÃO PRINCIPAL --- */
