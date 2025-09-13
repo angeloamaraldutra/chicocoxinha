@@ -1,9 +1,12 @@
 /* --- CONFIGURAÇÕES GLOBAIS E VARIÁVEIS DE COR --- */
 :root {
-    --cor-primaria: #EA1D2C; /* Vermelho principal, inspirado no iFood */
-    --cor-secundaria: #F7941D; /* Laranja da logo Chico Coxinha */
+    --cor-primaria: #EA1D2C;
+    --cor-secundaria: #F7941D;
     --cor-texto: #333333;
+    --cor-texto-footer: #DDDDDD;
     --cor-fundo: #F7F7F7;
+    --cor-fundo-footer: #2C2C2C;
+    --cor-fundo-footer-sutil: #222222;
     --cor-branca: #FFFFFF;
     --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -20,17 +23,38 @@ body {
     color: var(--cor-texto);
 }
 
-/* --- ALTERAÇÃO PRINCIPAL AQUI --- */
 .container {
-    max-width: 980px; /* Reduzido de 1200px para centralizar mais o conteúdo */
+    max-width: 980px; 
     margin: 0 auto;
-    padding: 0 25px; /* Um pouco mais de padding para telas menores */
+    padding: 0 25px;
 }
 
 /* --- SEÇÃO PRINCIPAL --- */
 .category-section {
     padding: 40px 0;
 }
+
+/* (O restante dos estilos do corpo da página permanece o mesmo) */
+/* --- ESTILOS PARA O NOVO TEXTO --- */
+.hero-text {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hero-text h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--cor-texto);
+    margin-bottom: 8px;
+}
+
+.hero-text p {
+    font-size: 18px;
+    color: #555;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
 
 /* --- ESTILOS DA BARRA DE BUSCA --- */
 .search-wrapper {
@@ -85,7 +109,6 @@ body {
 .category-grid {
     display: grid;
     gap: 20px;
-    /* Define 4 colunas para a grade no desktop */
     grid-template-columns: repeat(4, 1fr);
 }
 
@@ -96,7 +119,7 @@ body {
     color: var(--cor-branca);
     box-shadow: var(--sombra-suave);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background-color: #ccc; /* Cor de fundo para caso a imagem não carregue */
+    background-color: #ccc; 
 }
 
 .category-card:hover {
@@ -106,7 +129,6 @@ body {
 
 /* --- ESTILOS DOS CARDS GRANDES --- */
 .large-card {
-    /* Ocupa 2 colunas */
     grid-column: span 2;
     min-height: 220px;
     display: flex;
@@ -118,7 +140,6 @@ body {
     position: relative;
 }
 
-/* Efeito de sobreposição escura para melhorar a legibilidade do texto */
 .large-card::before {
     content: '';
     position: absolute;
@@ -154,7 +175,7 @@ body {
     font-weight: 500;
     display: inline-flex;
     align-items: center;
-    align-self: flex-start; /* Faz o botão não esticar */
+    align-self: flex-start;
     transition: background-color 0.3s ease;
 }
 
@@ -166,9 +187,6 @@ body {
     margin-left: 5px;
 }
 
-
-/* --- IMAGENS DE FUNDO DOS CARDS GRANDES --- */
-/* IMPORTANTE: Substitua os links pelas suas imagens */
 .card-franquias {
     background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto=format&fit=crop');
 }
@@ -176,10 +194,8 @@ body {
     background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop');
 }
 
-
 /* --- ESTILOS DOS CARDS PEQUENOS --- */
 .small-card {
-    /* Ocupa 1 coluna */
     grid-column: span 1;
     min-height: 120px;
     background-color: var(--cor-branca);
@@ -203,66 +219,118 @@ body {
     flex-grow: 1;
 }
 
-/* Cores específicas para os cards pequenos */
 .card-cardapio { background-color: #FFF0DD; }
 .card-bebidas { background-color: #DDEFFF; }
 
+/* ======================================= */
+/* == NOVOS ESTILOS DO RODAPÉ (FOOTER)  == */
+/* ======================================= */
 
-/* --- RESPONSIVIDADE --- */
+.site-footer {
+    /* Fundo com um gradiente sutil para mais profundidade */
+    background: linear-gradient(180deg, var(--cor-fundo-footer) 0%, var(--cor-fundo-footer-sutil) 100%);
+    color: var(--cor-texto-footer);
+    padding-top: 50px;
+    margin-top: 60px; /* Mais espaço entre o conteúdo principal e o rodapé */
+}
 
-/* Para Tablets (até 992px) */
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 40px;
+    /* Borda inferior com a cor da marca para um toque de branding */
+    border-bottom: 2px solid var(--cor-secundaria);
+}
+
+.footer-brand .footer-logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cor-branca);
+    margin-bottom: 10px;
+}
+
+.footer-brand p {
+    font-size: 15px;
+    color: var(--cor-texto-footer);
+    line-height: 1.5;
+}
+
+.footer-social h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cor-branca);
+    margin-bottom: 20px;
+    /* Efeito de tipografia mais moderno */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.social-links {
+    list-style: none;
+    padding: 0;
+    display: flex; /* Alinha os ícones horizontalmente */
+    gap: 15px; /* Espaço entre os ícones */
+}
+
+.social-links a {
+    color: var(--cor-texto-footer);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; /* Tamanho do círculo */
+    height: 44px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%; /* Transforma em círculo */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.social-links a:hover {
+    background-color: var(--cor-secundaria); /* Fundo laranja ao passar o mouse */
+    color: var(--cor-branca); /* Ícone branco */
+    transform: translateY(-3px); /* Efeito de elevação */
+}
+
+.footer-bottom {
+    text-align: center;
+    padding: 25px 0;
+    font-size: 14px;
+    color: #999;
+}
+
+.footer-bottom p {
+    margin-bottom: 5px;
+}
+
+/* --- RESPONSIVIDADE GERAL E DO FOOTER --- */
+
 @media (max-width: 992px) {
-    .category-grid {
-        /* A grade continua com 4 colunas, mas agora os cards grandes ocupam a largura toda */
-        grid-template-columns: repeat(4, 1fr);
-    }
-    .large-card {
-        grid-column: span 4; /* Ocupa 4 de 4 colunas = 100% da largura */
-    }
-    .small-card {
-        grid-column: span 2; /* Ocupa 2 de 4 colunas = 50% da largura */
+    .category-grid { grid-template-columns: repeat(4, 1fr); }
+    .large-card { grid-column: span 4; }
+    .small-card { grid-column: span 2; }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 }
 
-
-/* Para Celulares (até 600px) */
 @media (max-width: 600px) {
-    .category-section {
-        padding: 20px 0;
-    }
-    .search-bar {
-        flex-direction: column;
-        padding: 15px;
-    }
-    .search-bar input {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-    .search-bar button {
-        width: 100%;
-    }
-
-    .category-grid {
-        /* A grade vira uma única coluna */
-        grid-template-columns: 1fr;
-    }
-    .large-card, .small-card {
-        grid-column: span 1; /* Todos os cards ocupam 100% da largura */
-    }
-    .large-card {
-        min-height: 180px;
-    }
-    .large-card h2 {
-        font-size: 24px;
-    }
-    .small-card {
-        flex-direction: column;
-        text-align: center;
-    }
-    .small-card img {
-        margin-right: 0;
-        margin-bottom: 10px;
-        max-width: 100px;
-    }
+    .category-section { padding: 20px 0; }
+    .hero-text h1 { font-size: 32px; }
+    .hero-text p { font-size: 16px; }
+    .search-bar { flex-direction: column; padding: 15px; }
+    .search-bar input { width: 100%; text-align: center; margin-bottom: 10px; }
+    .search-bar button { width: 100%; }
+    .category-grid { grid-template-columns: 1fr; }
+    .large-card, .small-card { grid-column: span 1; }
+    .large-card { min-height: 180px; }
+    .large-card h2 { font-size: 24px; }
+    .small-card { flex-direction: column; text-align: center; }
+    .small-card img { margin-right: 0; margin-bottom: 10px; max-width: 100px; }
 }
