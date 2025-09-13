@@ -1,17 +1,32 @@
-/* --- CONFIGURAÇÕES GLOBAIS E VARIÁVEIS DE COR --- */
+/* ==========================================================================
+   1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS
+   ========================================================================== */
+
+/* Importação da Fonte */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+/* Variáveis de Design (Paleta de Cores, Fontes, etc.) */
 :root {
     --cor-primaria: #EA1D2C;
     --cor-secundaria: #F7941D;
-    --cor-texto: #333333;
-    --cor-texto-footer: #DDDDDD;
-    --cor-fundo: #F7F7F7; 
-    --cor-fundo-footer: #2C2C2C;
-    --cor-fundo-footer-sutil: #222222;
-    --cor-fundo-footer-animacao: #1c1c1c; 
+    --cor-texto-principal: #333333;
+    --cor-texto-secundario: #555555;
+    --cor-fundo-claro: #F8F9FA;
+    --cor-fundo-escuro: #2C2C2C;
+    --cor-fundo-escuro-sutil: #222222;
     --cor-branca: #FFFFFF;
-    --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --borda-suave: #EAECEF;
+
+    --fonte-principal: 'Roboto', sans-serif;
+
+    --sombra-card: 0px 8px 24px rgba(20, 20, 22, 0.08);
+    --sombra-card-hover: 0px 12px 32px rgba(20, 20, 22, 0.12);
+
+    --raio-borda: 16px; /* Borda arredondada padrão */
+    --transicao-rapida: 0.3s ease;
 }
 
+/* Reset Básico e Estilos Globais */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -19,83 +34,92 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
-    color: var(--cor-texto);
+    font-family: var(--fonte-principal);
+    color: var(--cor-texto-principal);
     background-color: var(--cor-branca);
+    line-height: 1.6;
 }
 
 .container {
-    max-width: 980px; 
+    max-width: 1024px; 
     margin: 0 auto;
-    padding: 0 25px;
+    padding: 0 2rem;
 }
 
-/* --- SEÇÃO PRINCIPAL --- */
-.category-section {
-    padding: 40px 0;
-    background-color: var(--cor-fundo); 
+/* ==========================================================================
+   2. ESTILOS DE COMPONENTES REUTILIZÁVEIS
+   ========================================================================== */
+
+.section-title {
+    font-size: clamp(1.75rem, 5vw, 2.25rem); /* Tamanho de fonte responsivo */
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: var(--cor-texto-principal);
+}
+
+/* ==========================================================================
+   3. SEÇÃO DE APRESENTAÇÃO E BUSCA (HERO)
+   ========================================================================== */
+
+.hero-section {
+    padding: 4rem 0;
+    background-color: var(--cor-fundo-claro); 
 }
 
 .hero-text {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
 }
 
 .hero-text h1 {
-    font-size: 42px;
+    font-size: clamp(2rem, 6vw, 2.75rem);
     font-weight: 700;
-    color: var(--cor-texto);
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
 }
 
 .hero-text p {
-    font-size: 18px;
-    color: #555;
-    max-width: 500px;
+    font-size: 1.125rem;
+    color: var(--cor-texto-secundario);
+    max-width: 550px;
     margin: 0 auto;
-}
-
-.search-wrapper {
-    margin-bottom: 30px;
 }
 
 .search-bar {
     display: flex;
     align-items: center;
     background-color: var(--cor-branca);
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 5px;
-    box-shadow: var(--sombra-suave);
+    border: 1px solid var(--borda-suave);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: var(--sombra-card);
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .search-bar .location-icon {
     color: var(--cor-primaria);
-    margin: 0 10px;
+    margin: 0 0.75rem;
 }
 
 .search-bar input {
     flex-grow: 1;
     border: none;
     outline: none;
-    font-size: 16px;
-    padding: 10px 5px;
-}
-
-.search-bar input::placeholder {
-    color: #999;
+    font-size: 1rem;
+    padding: 0.75rem 0.5rem;
 }
 
 .search-bar button {
     background-color: var(--cor-primaria);
     color: var(--cor-branca);
     border: none;
-    border-radius: 6px;
-    padding: 12px 25px;
-    font-size: 16px;
+    border-radius: 8px;
+    padding: 0.875rem 1.75rem;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--transicao-rapida);
 }
 
 .search-bar button:hover {
@@ -103,52 +127,47 @@ body {
 }
 
 
-/* ========================================================= */
-/* ==       NOVA SEÇÃO DE CARDS UNIFICADOS (INÍCIO)       == */
-/* ========================================================= */
+/* ==========================================================================
+   4. GRADE DE CATEGORIAS (2x2 GRID)
+   ========================================================================== */
 
-/* Novo layout 2x2 para a grade */
 .category-grid {
     display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 4rem;
 }
 
-/* Estilo base para TODOS os cards */
 .category-card {
-    min-height: 250px; /* Altura unificada */
-    border-radius: 16px;
+    min-height: 280px;
+    border-radius: var(--raio-borda);
     overflow: hidden;
     text-decoration: none;
     color: var(--cor-branca);
-    box-shadow: var(--sombra-suave);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
+    box-shadow: var(--sombra-card);
+    transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Alinha conteúdo na parte de baixo */
-    padding: 25px;
-    background-size: cover;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    background-size: 100%; /* Preparação para o zoom no hover */
     background-position: center;
     position: relative;
+    transition: background-size var(--transicao-rapida);
 }
 
-/* Overlay escuro para garantir a leitura do texto */
 .category-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%);
-    border-radius: 16px;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
     z-index: 1;
 }
 
 .category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-card-hover);
+    background-size: 105%; /* Efeito de zoom na imagem */
 }
 
 .card-content {
@@ -157,31 +176,24 @@ body {
 }
 
 .card-content h2 {
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 700;
     margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .card-content .card-button {
-    background-color: transparent;
-    border-radius: 0;
-    padding: 0;
-    margin-top: 5px;
-    font-size: 16px;
-    font-weight: 400;
+    margin-top: 0.25rem;
+    font-size: 1rem;
     display: inline-flex;
     align-items: center;
-    color: #f0f0f0;
-    transition: color 0.3s ease;
-}
-
-.card-content .card-button:hover {
-    color: var(--cor-branca);
+    color: rgba(255,255,255,0.85);
+    transition: color var(--transicao-rapida);
 }
 
 .card-content .card-button svg {
-    margin-left: 8px;
-    transition: transform 0.3s ease;
+    margin-left: 0.5rem;
+    transition: transform var(--transicao-rapida);
 }
 
 .category-card:hover .card-button svg {
@@ -189,99 +201,197 @@ body {
 }
 
 /* Imagens de fundo para cada card */
-.card-franquias {
-    background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto=format&fit=crop');
-}
-.card-lojas {
-    background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop');
-}
-.card-cardapio {
-    background-image: url('https://images.unsplash.com/photo-1599981559102-28b3a4f643e2?q=80&w=1964&auto=format&fit=crop'); /* Imagem de coxinhas */
-}
-.card-revendedor {
-    background-image: url('https://images.unsplash.com/photo-1582719201943-138337223b53?q=80&w=1974&auto=format&fit=crop'); /* Imagem de negócio/balcão */
-}
-/* ======================================================= */
-/* ==        NOVA SEÇÃO DE CARDS UNIFICADOS (FIM)       == */
-/* ======================================================= */
+.card-coxinha { background-image: url('https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=1974&auto=format&fit=crop'); }
+.card-fitness { background-image: url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop'); }
+.card-bebidas { background-image: url('https://images.unsplash.com/photo-1551024709-8f23befc6f81?q=80&w=2070&auto=format&fit=crop'); }
+.card-landuba { background-image: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1998&auto=format&fit=crop'); }
 
 
-/* --- ESTILOS DO RODAPÉ (FOOTER) --- */
+/* ==========================================================================
+   5. CARROSSEL DE PROMOÇÕES
+   ========================================================================== */
+
+.promotions-section {
+    padding: 4rem 0;
+    background-color: var(--cor-branca);
+}
+
+.carousel-wrapper {
+    position: relative;
+}
+
+.promotions-slider {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1.5rem; /* Espaço para a sombra não ser cortada */
+    /* Esconde a barra de rolagem */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.promotions-slider.scrolling { scroll-behavior: smooth; }
+.promotions-slider::-webkit-scrollbar { display: none; }
+
+.promo-card {
+    flex: 0 0 290px;
+    scroll-snap-align: start;
+    background-color: var(--cor-branca);
+    border-radius: var(--raio-borda);
+    box-shadow: var(--sombra-card);
+    overflow: hidden;
+    transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida);
+}
+
+.promo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--sombra-card-hover);
+}
+
+.promo-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.promo-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.promo-card-body h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.promo-card-body .promo-description {
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.price-wrapper {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.original-price {
+    color: #999;
+    text-decoration: line-through;
+}
+
+.promo-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+
+.btn-promo {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: var(--cor-secundaria);
+    color: var(--cor-branca);
+    padding: 0.875rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color var(--transicao-rapida);
+}
+.btn-promo:hover { background-color: #e68619; }
+
+.slide-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 48px;
+    width: 48px;
+    background-color: var(--cor-branca);
+    border: 1px solid var(--borda-suave);
+    border-radius: 50%;
+    box-shadow: var(--sombra-card);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cor-texto-principal);
+    transition: transform var(--transicao-rapida), box-shadow var(--transicao-rapida);
+}
+.slide-button:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: var(--sombra-card-hover);
+}
+#prev-slide { left: -24px; }
+#next-slide { right: -24px; }
+
+/* ==========================================================================
+   6. RODAPÉ (FOOTER)
+   ========================================================================== */
 
 .site-footer {
-    color: var(--cor-texto-footer);
-    padding-top: 50px;
-    margin-top: 60px;
-    background: linear-gradient(270deg, var(--cor-fundo-footer), var(--cor-fundo-footer-sutil), var(--cor-fundo-footer-animacao), var(--cor-fundo-footer-sutil));
+    color: #DDDDDD;
+    padding-top: 4rem;
+    margin-top: 2rem;
     background-size: 400% 400%;
     animation: animatedGradient 15s ease infinite;
 }
 
 .footer-content {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 40px;
-    padding-bottom: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
     border-bottom: 2px solid var(--cor-secundaria);
-}
-
-.footer-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; 
 }
 
 .footer-logo-img {
     max-width: 150px;
-    height: auto;
-    margin-bottom: 15px; 
+    margin-bottom: 1rem; 
 }
 
 .footer-brand p {
-    font-size: 15px;
-    color: var(--cor-texto-footer);
-    line-height: 1.5;
+    font-size: 0.9rem;
+    color: #BBBBBB;
 }
 
 .footer-links h4, .footer-social h4 {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--cor-branca);
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
-.sitemap-links {
+.sitemap-links, .social-links {
     list-style: none;
-    padding: 0;
 }
 
 .sitemap-links li {
-    margin-bottom: 12px;
+    margin-bottom: 0.75rem;
 }
 
 .sitemap-links a {
-    color: var(--cor-texto-footer);
+    color: #DDDDDD;
     text-decoration: none;
-    font-size: 15px;
-    transition: color 0.3s ease;
+    transition: color var(--transicao-rapida);
 }
-
-.sitemap-links a:hover {
-    color: var(--cor-secundaria);
-}
+.sitemap-links a:hover { color: var(--cor-secundaria); }
 
 .social-links {
-    list-style: none;
-    padding: 0;
     display: flex; 
-    gap: 15px;
+    gap: 1rem;
 }
 
 .social-links a {
-    color: var(--cor-texto-footer);
+    color: #DDDDDD;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -290,7 +400,7 @@ body {
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+    transition: background-color var(--transicao-rapida), color var(--transicao-rapida), transform var(--transicao-rapida);
 }
 
 .social-links a:hover {
@@ -301,55 +411,46 @@ body {
 
 .footer-bottom {
     text-align: center;
-    padding: 25px 0;
-    font-size: 14px;
+    padding: 1.5rem 0;
+    font-size: 0.875rem;
     color: #999;
 }
 
-.footer-bottom p {
-    margin-bottom: 5px;
+/* ==========================================================================
+   7. ANIMAÇÕES (KEYFRAMES)
+   ========================================================================== */
+
+@keyframes animatedGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
-/* --- RESPONSIVIDADE --- */
+/* ==========================================================================
+   8. MEDIA QUERIES (RESPONSIVIDADE)
+   ========================================================================== */
 
-/* Responsividade da Grade de Cards */
 @media (max-width: 768px) {
-    .category-grid {
-        grid-template-columns: 1fr; /* 1 coluna para telas menores */
+    .container {
+        padding: 0 1rem;
     }
-}
 
-
-/* Responsividade do Rodapé */
-@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .slide-button {
+        display: none;
+    }
+    
     .footer-content {
-        flex-direction: column;
-        align-items: center;
         text-align: center;
     }
+
     .footer-brand {
+        grid-column: 1 / -1; /* Ocupa a linha toda */
+        display: flex;
+        flex-direction: column;
         align-items: center; 
-    }
-}
-
-@media (max-width: 600px) {
-    .category-section { padding: 20px 0; }
-    .hero-text h1 { font-size: 32px; }
-    .hero-text p { font-size: 16px; }
-    .search-bar { flex-direction: column; padding: 15px; }
-    .search-bar input { width: 100%; text-align: center; margin-bottom: 10px; }
-    .search-bar button { width: 100%; }
-}
-
-/* --- KEYFRAMES PARA A ANIMAÇÃO DO FUNDO --- */
-@keyframes animatedGradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
     }
 }
