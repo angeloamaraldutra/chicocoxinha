@@ -4,9 +4,10 @@
     --cor-secundaria: #F7941D;
     --cor-texto: #333333;
     --cor-texto-footer: #DDDDDD;
-    --cor-fundo: #F7F7F7;
+    --cor-fundo: #F7F7F7; 
     --cor-fundo-footer: #2C2C2C;
     --cor-fundo-footer-sutil: #222222;
+    --cor-fundo-footer-animacao: #1c1c1c; 
     --cor-branca: #FFFFFF;
     --sombra-suave: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -19,7 +20,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--cor-fundo);
+    background-color: var(--cor-branca); 
     color: var(--cor-texto);
 }
 
@@ -32,10 +33,9 @@ body {
 /* --- SEÇÃO PRINCIPAL --- */
 .category-section {
     padding: 40px 0;
+    background-color: var(--cor-fundo); 
 }
-
-/* (O restante dos estilos do corpo da página permanece o mesmo) */
-/* --- ESTILOS PARA O NOVO TEXTO --- */
+/* ... (demais estilos do corpo da página) ... */
 .hero-text {
     text-align: center;
     margin-bottom: 30px;
@@ -55,8 +55,6 @@ body {
     margin: 0 auto;
 }
 
-
-/* --- ESTILOS DA BARRA DE BUSCA --- */
 .search-wrapper {
     margin-bottom: 30px;
 }
@@ -104,8 +102,6 @@ body {
     background-color: #c81a25;
 }
 
-
-/* --- GRID DE CATEGORIAS --- */
 .category-grid {
     display: grid;
     gap: 20px;
@@ -127,7 +123,6 @@ body {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* --- ESTILOS DOS CARDS GRANDES --- */
 .large-card {
     grid-column: span 2;
     min-height: 220px;
@@ -188,50 +183,90 @@ body {
 }
 
 .card-franquias {
-    background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto=format&fit=crop');
+    background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto-format&fit=crop');
 }
 .card-locais {
-    background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop');
+    background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto-format&fit=crop');
 }
 
-/* --- ESTILOS DOS CARDS PEQUENOS --- */
+/* ========================================================= */
+/* ==       MELHORIAS NOS CARDS PEQUENOS (INÍCIO)         == */
+/* ========================================================= */
 .small-card {
     grid-column: span 1;
     min-height: 120px;
     background-color: var(--cor-branca);
     display: flex;
+    /* Alterações de layout */
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 15px;
+    justify-content: center;
+    padding: 20px;
     color: var(--cor-texto);
+    border: 1px solid #eee; /* Borda sutil */
 }
 
 .small-card img {
-    max-width: 80px;
+    max-width: 60px; /* Tamanho da imagem ajustado */
     height: auto;
     object-fit: contain;
-    margin-right: 15px;
+    margin-right: 0; /* Removido */
+    margin-bottom: 15px; /* Espaço entre imagem e texto */
 }
 
 .small-card h3 {
     font-size: 16px;
-    font-weight: 500;
-    flex-grow: 1;
+    font-weight: 700; /* Texto mais forte */
+    flex-grow: 0; /* Removido */
+    position: relative; /* Necessário para o pseudo-elemento da seta */
+    transition: color 0.3s ease;
 }
 
-.card-cardapio { background-color: #FFF0DD; }
-.card-bebidas { background-color: #DDEFFF; }
+/* Seta interativa que aparece ao lado do texto */
+.small-card h3::after {
+    content: '→';
+    font-size: 1.2em;
+    position: absolute;
+    right: -25px; /* Posição inicial da seta */
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0; /* Começa invisível */
+    transition: opacity 0.3s ease, right 0.3s ease;
+}
 
-/* ======================================= */
-/* == NOVOS ESTILOS DO RODAPÉ (FOOTER)  == */
-/* ======================================= */
+/* Efeitos de hover no card pequeno */
+.small-card:hover h3 {
+    color: var(--cor-primaria); /* Muda a cor do texto */
+}
+
+.small-card:hover h3::after {
+    opacity: 1; /* Seta fica visível */
+    right: -30px; /* Seta se move para a direita */
+}
+
+/* Fundos em gradiente e bordas personalizadas */
+.card-cardapio { 
+    background: linear-gradient(135deg, #FFFFFF 0%, #FFF0DD 100%);
+    border-color: #FFE0B5;
+}
+.card-bebidas { 
+    background: linear-gradient(135deg, #FFFFFF 0%, #DDEFFF 100%);
+    border-color: #BEE3FF;
+}
+/* ======================================================= */
+/* ==        MELHORIAS NOS CARDS PEQUENOS (FIM)         == */
+/* ======================================================= */
+
+
+/* --- ESTILOS DO RODAPÉ (FOOTER) --- */
 
 .site-footer {
-    /* Fundo com um gradiente sutil para mais profundidade */
-    background: linear-gradient(180deg, var(--cor-fundo-footer) 0%, var(--cor-fundo-footer-sutil) 100%);
     color: var(--cor-texto-footer);
     padding-top: 50px;
-    margin-top: 60px; /* Mais espaço entre o conteúdo principal e o rodapé */
+    margin-top: 60px;
+    background: linear-gradient(270deg, var(--cor-fundo-footer), var(--cor-fundo-footer-sutil), var(--cor-fundo-footer-animacao), var(--cor-fundo-footer-sutil));
+    background-size: 400% 400%;
+    animation: animatedGradient 15s ease infinite;
 }
 
 .footer-content {
@@ -240,15 +275,19 @@ body {
     flex-wrap: wrap;
     gap: 40px;
     padding-bottom: 40px;
-    /* Borda inferior com a cor da marca para um toque de branding */
     border-bottom: 2px solid var(--cor-secundaria);
 }
 
-.footer-brand .footer-logo {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--cor-branca);
-    margin-bottom: 10px;
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+}
+
+.footer-logo-img {
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 15px; 
 }
 
 .footer-brand p {
@@ -257,21 +296,40 @@ body {
     line-height: 1.5;
 }
 
-.footer-social h4 {
+.footer-links h4, .footer-social h4 {
     font-size: 16px;
     font-weight: 700;
     color: var(--cor-branca);
     margin-bottom: 20px;
-    /* Efeito de tipografia mais moderno */
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.sitemap-links {
+    list-style: none;
+    padding: 0;
+}
+
+.sitemap-links li {
+    margin-bottom: 12px;
+}
+
+.sitemap-links a {
+    color: var(--cor-texto-footer);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
+
+.sitemap-links a:hover {
+    color: var(--cor-secundaria);
 }
 
 .social-links {
     list-style: none;
     padding: 0;
-    display: flex; /* Alinha os ícones horizontalmente */
-    gap: 15px; /* Espaço entre os ícones */
+    display: flex; 
+    gap: 15px;
 }
 
 .social-links a {
@@ -279,18 +337,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px; /* Tamanho do círculo */
+    width: 44px;
     height: 44px;
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%; /* Transforma em círculo */
+    border-radius: 50%;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .social-links a:hover {
-    background-color: var(--cor-secundaria); /* Fundo laranja ao passar o mouse */
-    color: var(--cor-branca); /* Ícone branco */
-    transform: translateY(-3px); /* Efeito de elevação */
+    background-color: var(--cor-secundaria);
+    color: var(--cor-branca);
+    transform: translateY(-3px);
 }
 
 .footer-bottom {
@@ -304,7 +362,7 @@ body {
     margin-bottom: 5px;
 }
 
-/* --- RESPONSIVIDADE GERAL E DO FOOTER --- */
+/* --- RESPONSIVIDADE --- */
 
 @media (max-width: 992px) {
     .category-grid { grid-template-columns: repeat(4, 1fr); }
@@ -317,6 +375,9 @@ body {
         flex-direction: column;
         align-items: center;
         text-align: center;
+    }
+    .footer-brand {
+        align-items: center; 
     }
 }
 
@@ -331,6 +392,18 @@ body {
     .large-card, .small-card { grid-column: span 1; }
     .large-card { min-height: 180px; }
     .large-card h2 { font-size: 24px; }
-    .small-card { flex-direction: column; text-align: center; }
-    .small-card img { margin-right: 0; margin-bottom: 10px; max-width: 100px; }
+    /* O novo layout do small-card já é ideal para mobile, sem necessidade de mais alterações */
+}
+
+/* --- KEYFRAMES PARA A ANIMAÇÃO DO FUNDO --- */
+@keyframes animatedGradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
