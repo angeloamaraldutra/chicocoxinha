@@ -20,8 +20,8 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: var(--cor-branca); 
     color: var(--cor-texto);
+    background-color: var(--cor-branca);
 }
 
 .container {
@@ -35,7 +35,7 @@ body {
     padding: 40px 0;
     background-color: var(--cor-fundo); 
 }
-/* ... (demais estilos do corpo da página) ... */
+
 .hero-text {
     text-align: center;
     margin-bottom: 30px;
@@ -102,159 +102,107 @@ body {
     background-color: #c81a25;
 }
 
+
+/* ========================================================= */
+/* ==       NOVA SEÇÃO DE CARDS UNIFICADOS (INÍCIO)       == */
+/* ========================================================= */
+
+/* Novo layout 2x2 para a grade */
 .category-grid {
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
 }
 
+/* Estilo base para TODOS os cards */
 .category-card {
+    min-height: 250px; /* Altura unificada */
     border-radius: 16px;
     overflow: hidden;
     text-decoration: none;
     color: var(--cor-branca);
     box-shadow: var(--sombra-suave);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    background-color: #ccc; 
-}
-
-.category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.large-card {
-    grid-column: span 2;
-    min-height: 220px;
+    
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end; /* Alinha conteúdo na parte de baixo */
     padding: 25px;
     background-size: cover;
     background-position: center;
     position: relative;
 }
 
-.large-card::before {
+/* Overlay escuro para garantir a leitura do texto */
+.category-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%);
     border-radius: 16px;
+    z-index: 1;
 }
 
-.large-card .card-content {
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
     position: relative;
     z-index: 2;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
-.large-card h2 {
+.card-content h2 {
     font-size: 28px;
     font-weight: 700;
+    margin: 0;
 }
 
-.large-card .card-button {
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50px;
-    padding: 8px 15px;
-    font-size: 14px;
-    font-weight: 500;
+.card-content .card-button {
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 400;
     display: inline-flex;
     align-items: center;
-    align-self: flex-start;
-    transition: background-color 0.3s ease;
-}
-
-.large-card .card-button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-.large-card .card-button svg {
-    margin-left: 5px;
-}
-
-.card-franquias {
-    background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto-format&fit=crop');
-}
-.card-locais {
-    background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto-format&fit=crop');
-}
-
-/* ========================================================= */
-/* ==       MELHORIAS NOS CARDS PEQUENOS (INÍCIO)         == */
-/* ========================================================= */
-.small-card {
-    grid-column: span 1;
-    min-height: 120px;
-    background-color: var(--cor-branca);
-    display: flex;
-    /* Alterações de layout */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    color: var(--cor-texto);
-    border: 1px solid #eee; /* Borda sutil */
-}
-
-.small-card img {
-    max-width: 60px; /* Tamanho da imagem ajustado */
-    height: auto;
-    object-fit: contain;
-    margin-right: 0; /* Removido */
-    margin-bottom: 15px; /* Espaço entre imagem e texto */
-}
-
-.small-card h3 {
-    font-size: 16px;
-    font-weight: 700; /* Texto mais forte */
-    flex-grow: 0; /* Removido */
-    position: relative; /* Necessário para o pseudo-elemento da seta */
+    color: #f0f0f0;
     transition: color 0.3s ease;
 }
 
-/* Seta interativa que aparece ao lado do texto */
-.small-card h3::after {
-    content: '→';
-    font-size: 1.2em;
-    position: absolute;
-    right: -25px; /* Posição inicial da seta */
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0; /* Começa invisível */
-    transition: opacity 0.3s ease, right 0.3s ease;
+.card-content .card-button:hover {
+    color: var(--cor-branca);
 }
 
-/* Efeitos de hover no card pequeno */
-.small-card:hover h3 {
-    color: var(--cor-primaria); /* Muda a cor do texto */
+.card-content .card-button svg {
+    margin-left: 8px;
+    transition: transform 0.3s ease;
 }
 
-.small-card:hover h3::after {
-    opacity: 1; /* Seta fica visível */
-    right: -30px; /* Seta se move para a direita */
+.category-card:hover .card-button svg {
+    transform: translateX(5px);
 }
 
-/* Fundos em gradiente e bordas personalizadas */
-.card-cardapio { 
-    background: linear-gradient(135deg, #FFFFFF 0%, #FFF0DD 100%);
-    border-color: #FFE0B5;
+/* Imagens de fundo para cada card */
+.card-franquias {
+    background-image: url('https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto=format&fit=crop');
 }
-.card-bebidas { 
-    background: linear-gradient(135deg, #FFFFFF 0%, #DDEFFF 100%);
-    border-color: #BEE3FF;
+.card-lojas {
+    background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop');
+}
+.card-cardapio {
+    background-image: url('https://images.unsplash.com/photo-1599981559102-28b3a4f643e2?q=80&w=1964&auto=format&fit=crop'); /* Imagem de coxinhas */
+}
+.card-revendedor {
+    background-image: url('https://images.unsplash.com/photo-1582719201943-138337223b53?q=80&w=1974&auto=format&fit=crop'); /* Imagem de negócio/balcão */
 }
 /* ======================================================= */
-/* ==        MELHORIAS NOS CARDS PEQUENOS (FIM)         == */
+/* ==        NOVA SEÇÃO DE CARDS UNIFICADOS (FIM)       == */
 /* ======================================================= */
 
 
@@ -364,12 +312,15 @@ body {
 
 /* --- RESPONSIVIDADE --- */
 
-@media (max-width: 992px) {
-    .category-grid { grid-template-columns: repeat(4, 1fr); }
-    .large-card { grid-column: span 4; }
-    .small-card { grid-column: span 2; }
+/* Responsividade da Grade de Cards */
+@media (max-width: 768px) {
+    .category-grid {
+        grid-template-columns: 1fr; /* 1 coluna para telas menores */
+    }
 }
 
+
+/* Responsividade do Rodapé */
 @media (max-width: 768px) {
     .footer-content {
         flex-direction: column;
@@ -388,11 +339,6 @@ body {
     .search-bar { flex-direction: column; padding: 15px; }
     .search-bar input { width: 100%; text-align: center; margin-bottom: 10px; }
     .search-bar button { width: 100%; }
-    .category-grid { grid-template-columns: 1fr; }
-    .large-card, .small-card { grid-column: span 1; }
-    .large-card { min-height: 180px; }
-    .large-card h2 { font-size: 24px; }
-    /* O novo layout do small-card já é ideal para mobile, sem necessidade de mais alterações */
 }
 
 /* --- KEYFRAMES PARA A ANIMAÇÃO DO FUNDO --- */
