@@ -628,6 +628,115 @@
             right: 0;
         }
 
+        /* Indicadores do carrossel */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ddd;
+            cursor: pointer;
+            transition: var(--transition-padrao);
+        }
+
+        .indicator.active {
+            background-color: var(--cor-primaria);
+            transform: scale(1.2);
+        }
+
+        /* --- JOGO DO SALGADO --- */
+        .game-section {
+            padding: 80px 0;
+            background-color: var(--cor-fundo);
+            text-align: center;
+        }
+
+        .game-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: var(--borda-radius);
+            overflow: hidden;
+            box-shadow: var(--sombra-media);
+        }
+
+        .game-canvas {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            display: block;
+            cursor: pointer;
+        }
+
+        .game-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        .game-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--cor-branca);
+        }
+
+        .game-instructions {
+            margin-bottom: 20px;
+            font-size: 1rem;
+            max-width: 80%;
+            line-height: 1.5;
+        }
+
+        .game-button {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-branca);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-padrao);
+        }
+
+        .game-button:hover {
+            background-color: var(--cor-secundaria-escura);
+            transform: translateY(-3px);
+        }
+
+        .game-score {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cor-texto);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
         /* --- APP SECTION --- */
         .app-section {
             padding: 80px 0;
@@ -1105,7 +1214,7 @@
                     <div class="card-content">
                         <h2>Chico Coxinha</h2>
                         <span class="card-button">
-                            Crocantes e irresistíveis
+                            Crocantes e saborosas
                             <i class="fas fa-arrow-right"></i>
                         </span>
                     </div>
@@ -1115,7 +1224,7 @@
                     <div class="card-content">
                         <h2>Chico Fitness</h2>
                         <span class="card-button">
-                            Opções leves e deliciosas
+                            Opções saudáveis
                             <i class="fas fa-arrow-right"></i>
                         </span>
                     </div>
@@ -1123,10 +1232,9 @@
                 
                 <a href="#" class="category-card card-bebidas">
                     <div class="card-content">
-<<<<<<< HEAD
                         <h2>Chico Bebidas</h2>
                         <span class="card-button">
-                            Refresque seu momento
+                            Refrescantes
                             <i class="fas fa-arrow-right"></i>
                         </span>
                     </div>
@@ -1134,31 +1242,13 @@
                 
                 <a href="#" class="category-card card-landuba">
                     <div class="card-content">
-                        <h2>Chico Landuba</h2>
+                        <h2>Chico LanDuba</h2>
                         <span class="card-button">
-                            Pra matar a sua fome
+                            Sanduíches incríveis
                             <i class="fas fa-arrow-right"></i>
                         </span>
                     </div>
                 </a>
-=======
-                       <h2>Chico Bebidas</h2>
-                       <span class="card-button">
-                           Refresque seu momento
-                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                       </span>
-                   </div>
-               </a>
-               <a href="#" class="category-card card-landuba">
-                <div class="card-content">
-                   <h2>Chico Sanduba</h2>
-                   <span class="card-button">
-                       Pra matar a sua fome
-                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                   </span>
-               </div>
-           </a>
->>>>>>> f1dddf82d63ef1056eea229242007407667a2197
             </div>
         </div>
     </section>
@@ -1167,92 +1257,138 @@
     <section class="promotions-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">Promoções do Dia</h2>
+                <h2 class="section-title">Promoções Imperdíveis</h2>
                 <p class="section-subtitle">Aproveite nossas ofertas exclusivas por tempo limitado</p>
             </div>
             
             <div class="carousel-wrapper">
-                <button id="prev-slide" class="slide-button" aria-label="Slide Anterior">
+                <button class="slide-button" id="prev-slide">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 
                 <div class="promotions-slider">
                     <div class="promo-card">
-                        <span class="promo-badge">-20%</span>
-                        <img src="combo.jpg" alt="Combo Coxinha e Refri">
-                        <div class="promo-card-body">
-                            <h3>Combo Coxinha + Refri</h3>
-                            <p class="promo-description">A combinação perfeita para sua fome. 3 coxinhas + 1 refri lata.</p>
-                            <div class="price-wrapper">
-                                <span class="original-price">R$ 18,00</span>
-                                <span class="promo-price">R$ 14,90</span>
-                                <span class="economize">Economize R$ 3,10</span>
-                            </div>
-                            <button class="btn-promo">
-                                <i class="fas fa-shopping-cart"></i>
-                                Pedir Agora
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="promo-card">
                         <span class="promo-badge">-30%</span>
-                        <img src="coxinha-premium.jpg" alt="Coxinha Premium">
+                        <img src="https://images.unsplash.com/photo-1626700051175-6818013a1fd4?q=80&w=1964&auto=format&fit=crop" alt="Coxinha Especial">
                         <div class="promo-card-body">
-                            <h3>Coxinha Premium</h3>
-                            <p class="promo-description">Frango desfiado com catupiry, envolvido por massa crocante.</p>
+                            <h3>Coxinha Especial</h3>
+                            <p class="promo-description">Frango desfiado temperado com requeijão cremoso e catupiry.</p>
                             <div class="price-wrapper">
-                                <span class="original-price">R$ 8,00</span>
-                                <span class="promo-price">R$ 5,60</span>
-                                <span class="economize">Economize R$ 2,40</span>
+                                <span class="original-price">R$ 8,90</span>
+                                <span class="promo-price">R$ 6,23</span>
+                                <span class="economize">Economize R$ 2,67</span>
                             </div>
                             <button class="btn-promo">
                                 <i class="fas fa-shopping-cart"></i>
-                                Pedir Agora
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="promo-card">
-                        <span class="promo-badge">-15%</span>
-                        <img src="kibe.jpg" alt="Kibe Recheado">
-                        <div class="promo-card-body">
-                            <h3>Kibe Recheado</h3>
-                            <p class="promo-description">Kibe com recheio de queijo mussarela e carne temperada.</p>
-                            <div class="price-wrapper">
-                                <span class="original-price">R$ 7,50</span>
-                                <span class="promo-price">R$ 6,37</span>
-                                <span class="economize">Economize R$ 1,13</span>
-                            </div>
-                            <button class="btn-promo">
-                                <i class="fas fa-shopping-cart"></i>
-                                Pedir Agora
+                                Adicionar
                             </button>
                         </div>
                     </div>
                     
                     <div class="promo-card">
                         <span class="promo-badge">-25%</span>
-                        <img src="pastel.jpg" alt="Pastel de Carne">
+                        <img src="https://images.unsplash.com/photo-1555949969-aa97032049a7?q=80&w=1974&auto=format&fit=crop" alt="Kibe com Queijo">
                         <div class="promo-card-body">
-                            <h3>Pastel de Carne</h3>
-                            <p class="promo-description">Pastel com recheio de carne moída temperada e azeitona.</p>
+                            <h3>Kibe com Queijo</h3>
+                            <p class="promo-description">Kibe recheado com queijo mussarela derretido e temperos especiais.</p>
                             <div class="price-wrapper">
-                                <span class="original-price">R$ 9,00</span>
-                                <span class="promo-price">R$ 6,75</span>
-                                <span class="economize">Economize R$ 2,25</span>
+                                <span class="original-price">R$ 7,50</span>
+                                <span class="promo-price">R$ 5,63</span>
+                                <span class="economize">Economize R$ 1,87</span>
                             </div>
                             <button class="btn-promo">
                                 <i class="fas fa-shopping-cart"></i>
-                                Pedir Agora
+                                Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card">
+                        <span class="promo-badge">-40%</span>
+                        <img src="https://images.unsplash.com/photo-1610399214653-4c4f5d2c4784?q=80&w=1974&auto=format&fit=crop" alt="Esfiha Carne">
+                        <div class="promo-card-body">
+                            <h3>Esfiha de Carne</h3>
+                            <p class="promo-description">Massa fina recheada com carne moída temperada e limão.</p>
+                            <div class="price-wrapper">
+                                <span class="original-price">R$ 6,90</span>
+                                <span class="promo-price">R$ 4,14</span>
+                                <span class="economize">Economize R$ 2,76</span>
+                            </div>
+                            <button class="btn-promo">
+                                <i class="fas fa-shopping-cart"></i>
+                                Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card">
+                        <span class="promo-badge">-20%</span>
+                        <img src="https://images.unsplash.com/photo-1612927601601-6638404737ce?q=80&w=1987&auto=format&fit=crop" alt="Pastel de Frango">
+                        <div class="promo-card-body">
+                            <h3>Pastel de Frango</h3>
+                            <p class="promo-description">Massa crocante recheada com frango desfiado e temperos.</p>
+                            <div class="price-wrapper">
+                                <span class="original-price">R$ 9,90</span>
+                                <span class="promo-price">R$ 7,92</span>
+                                <span class="economize">Economize R$ 1,98</span>
+                            </div>
+                            <button class="btn-promo">
+                                <i class="fas fa-shopping-cart"></i>
+                                Adicionar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card">
+                        <span class="promo-badge">-35%</span>
+                        <img src="https://images.unsplash.com/photo-1632773714628-e8820c93f0d3?q=80&w=1925&auto=format&fit=crop" alt="Bolinha de Queijo">
+                        <div class="promo-card-body">
+                            <h3>Bolinha de Queijo</h3>
+                            <p class="promo-description">Massa leve recheada com queijo mussarela derretido.</p>
+                            <div class="price-wrapper">
+                                <span class="original-price">R$ 8,50</span>
+                                <span class="promo-price">R$ 5,53</span>
+                                <span class="economize">Economize R$ 2,97</span>
+                            </div>
+                            <button class="btn-promo">
+                                <i class="fas fa-shopping-cart"></i>
+                                Adicionar
                             </button>
                         </div>
                     </div>
                 </div>
                 
-                <button id="next-slide" class="slide-button" aria-label="Próximo Slide">
+                <button class="slide-button" id="next-slide">
                     <i class="fas fa-chevron-right"></i>
                 </button>
+                
+                <div class="carousel-indicators">
+                    <div class="indicator active"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                    <div class="indicator"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JOGO DO SALGADO -->
+    <section class="game-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Jogo do Salgado</h2>
+                <p class="section-subtitle">Divirta-se enquanto espera seu pedido chegar!</p>
+            </div>
+            
+            <div class="game-container">
+                <canvas id="game-canvas" class="game-canvas" width="600" height="200"></canvas>
+                <div class="game-overlay" id="game-overlay">
+                    <h3 class="game-title">Salgado Pulador</h3>
+                    <p class="game-instructions">Pressione ESPAÇO ou clique na tela para pular e desviar dos obstáculos!</p>
+                    <button class="game-button" id="start-button">Começar a Jogar</button>
+                </div>
+                <div class="game-score" id="score">Pontuação: 0</div>
             </div>
         </div>
     </section>
@@ -1262,8 +1398,8 @@
         <div class="container">
             <div class="app-content">
                 <div class="app-text">
-                    <h2 class="app-title">Baixe nosso app e ganhe desconto!</h2>
-                    <p class="app-subtitle">Faça pedidos mais rápido, acompanhe em tempo real e acumule pontos para descontos exclusivos. Tudo na palma da sua mão!</p>
+                    <h2 class="app-title">Baixe nosso app e ganhe descontos!</h2>
+                    <p class="app-subtitle">Faça pedidos mais rápido, acompanhe em tempo real e acumule pontos para trocar por salgados grátis. Tudo na palma da sua mão!</p>
                     
                     <div class="app-buttons">
                         <a href="#" class="app-btn">
@@ -1285,7 +1421,7 @@
                 </div>
                 
                 <div class="app-image">
-                    <img src="app-mockup.png" alt="App Chico Coxinha">
+                    <img src="https://images.unsplash.com/photo-1607083206968-13611e3d76db?q=80&w=2115&auto=format&fit=crop" alt="App Chico Coxinha">
                 </div>
             </div>
         </div>
@@ -1296,98 +1432,359 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-brand">
-                    <img src="chico-coxinha-white.png" alt="Chico Coxinha" class="footer-logo">
-                    <p>Entregando sabor e qualidade desde 2010. Nossas coxinhas são feitas com ingredientes selecionados e muito carinho.</p>
+                    <img src="chico-coxinha-branco.png" alt="Chico Coxinha" class="footer-logo">
+                    <p>Entregando sabor e qualidade desde 2010. Mais de 2 milhões de clientes satisfeitos em todo o Brasil.</p>
                     
                     <div class="footer-download">
                         <a href="#">
-                            <img src="google-play-badge.png" alt="Google Play">
+                            <img src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg" alt="App Store">
                         </a>
                         <a href="#">
-                            <img src="app-store-badge.png" alt="App Store">
+                            <img src="https://play.google.com/intl/en_us/badges/static/images/badges/pt-br_badge_web_generic.png" alt="Google Play">
                         </a>
                     </div>
                 </div>
                 
                 <div class="footer-links">
-                    <h4>Institucional</h4>
+                    <h4>Links Rápidos</h4>
                     <ul class="sitemap-links">
-                        <li><a href="#">Sobre nós</a></li>
+                        <li><a href="#">Sobre Nós</a></li>
                         <li><a href="#">Nossas Lojas</a></li>
+                        <li><a href="#">Fale Conosco</a></li>
                         <li><a href="#">Trabalhe Conosco</a></li>
                         <li><a href="#">Política de Privacidade</a></li>
-                        <li><a href="#">Termos de Uso</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
-                    <h4>Ajuda</h4>
+                    <h4>Categorias</h4>
                     <ul class="sitemap-links">
-                        <li><a href="#">Fale Conosco</a></li>
-                        <li><a href="#">Perguntas Frequentes</a></li>
-                        <li><a href="#">Política de Entrega</a></li>
-                        <li><a href="#">Troca e Devolução</a></li>
-                        <li><a href="#">Status do Pedido</a></li>
+                        <li><a href="#">Coxinhas</a></li>
+                        <li><a href="#">Pasteis</a></li>
+                        <li><a href="#">Kibes</a></li>
+                        <li><a href="#">Esfihas</a></li>
+                        <li><a href="#">Bebidas</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-social">
-                    <h4>Conecte-se</h4>
+                    <h4>Redes Sociais</h4>
                     <ul class="social-links">
                         <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
                         <li><a href="#"><i class="fab fa-instagram"></i></a></li>
                         <li><a href="#"><i class="fab fa-twitter"></i></a></li>
                         <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                        <li><a href="#"><i class="fab fa-whatsapp"></i></a></li>
+                        <li><a href="#"><i class="fab fa-tiktok"></i></a></li>
                     </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>Chico Coxinha Delivery © 2023 - Todos os direitos reservados</p>
-                <p>CNPJ: 12.345.678/0001-99 - Endereço: Rua das Coxinhas, 123, Centro, São Paulo/SP</p>
+                <p>Chico Coxinha ® 2023 - Todos os direitos reservados</p>
+                <p>CNPJ: 12.345.678/0001-99 • Endereço: Rua dos Salgados, 123, Centro, São Paulo - SP</p>
                 
                 <div class="payment-methods">
                     <i class="fab fa-cc-visa"></i>
                     <i class="fab fa-cc-mastercard"></i>
                     <i class="fab fa-cc-amex"></i>
-                    <i class="fab fa-cc-diners-club"></i>
-                    <i class="fab fa-pix"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Script para o carrossel de promoções
+        // CARROSSEL DE PRODUTOS
         document.addEventListener('DOMContentLoaded', function() {
             const slider = document.querySelector('.promotions-slider');
+            const slides = document.querySelectorAll('.promo-card');
             const prevButton = document.getElementById('prev-slide');
             const nextButton = document.getElementById('next-slide');
+            const indicators = document.querySelectorAll('.indicator');
+            
+            let currentSlide = 0;
+            const slideWidth = slides[0].offsetWidth + 20; // Largura do slide + gap
+            
+            // Função para atualizar a posição do carrossel
+            function updateSlidePosition() {
+                slider.scrollTo({
+                    left: currentSlide * slideWidth,
+                    behavior: 'smooth'
+                });
+                updateIndicators();
+            }
+            
+            // Função para atualizar os indicadores
+            function updateIndicators() {
+                indicators.forEach((indicator, index) => {
+                    if (index === currentSlide) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Event listeners para os botões de navegação
+            prevButton.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    currentSlide--;
+                    updateSlidePosition();
+                }
+            });
             
             nextButton.addEventListener('click', () => {
-                slider.scrollBy({ left: 320, behavior: 'smooth' });
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                    updateSlidePosition();
+                }
             });
             
-            prevButton.addEventListener('click', () => {
-                slider.scrollBy({ left: -320, behavior: 'smooth' });
+            // Event listeners para os indicadores
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = index;
+                    updateSlidePosition();
+                });
             });
             
-            // Efeito de digitação no título
-            const heroTitle = document.querySelector('.hero-title span');
-            const originalText = heroTitle.textContent;
-            heroTitle.textContent = '';
+            // Autoplay para o carrossel
+            setInterval(() => {
+                if (currentSlide < slides.length - 1) {
+                    currentSlide++;
+                } else {
+                    currentSlide = 0;
+                }
+                updateSlidePosition();
+            }, 5000);
             
-            let i = 0;
-            function typeWriter() {
-                if (i < originalText.length) {
-                    heroTitle.textContent += originalText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 100);
+            // Atualiza indicadores quando o usuário arrasta o carrossel
+            slider.addEventListener('scroll', () => {
+                const scrollPos = slider.scrollLeft;
+                currentSlide = Math.round(scrollPos / slideWidth);
+                updateIndicators();
+            });
+        });
+
+        // JOGO DO SALGADO PULADOR
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            const startButton = document.getElementById('start-button');
+            const gameOverlay = document.getElementById('game-overlay');
+            const scoreDisplay = document.getElementById('score');
+            
+            // Configurações do jogo
+            const groundHeight = 30;
+            const salgadoWidth = 30;
+            const salgadoHeight = 40;
+            const obstacleWidth = 20;
+            const obstacleMinHeight = 20;
+            const obstacleMaxHeight = 50;
+            const gravity = 0.5;
+            const jumpForce = 12;
+            const gameSpeed = 5;
+            
+            // Variáveis do jogo
+            let salgado = {
+                x: 50,
+                y: canvas.height - groundHeight - salgadoHeight,
+                width: salgadoWidth,
+                height: salgadoHeight,
+                velocityY: 0,
+                jumping: false
+            };
+            
+            let obstacles = [];
+            let score = 0;
+            let gameOver = false;
+            let gameStarted = false;
+            let animationId;
+            
+            // Desenhar o chão
+            function drawGround() {
+                ctx.fillStyle = '#74b566';
+                ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
+                
+                // Grama
+                ctx.fillStyle = '#5a9c4e';
+                for (let i = 0; i < canvas.width; i += 15) {
+                    ctx.fillRect(i, canvas.height - groundHeight, 10, 5);
                 }
             }
             
-            setTimeout(typeWriter, 500);
+            // Desenhar o salgado
+            function drawSalgado() {
+                // Corpo (parte dourada)
+                ctx.fillStyle = '#e6b156';
+                ctx.beginPath();
+                ctx.ellipse(salgado.x + salgado.width/2, salgado.y + salgado.height/2, salgado.width/2, salgado.height/2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Massa crocante (parte mais escura)
+                ctx.fillStyle = '#d49b3f';
+                ctx.beginPath();
+                ctx.ellipse(salgado.x + salgado.width/2, salgado.y + salgado.height/2 + 2, salgado.width/2 - 2, salgado.height/2 - 2, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Detalhe de recheio
+                ctx.fillStyle = '#f9d7a3';
+                ctx.beginPath();
+                ctx.ellipse(salgado.x + salgado.width/2, salgado.y + salgado.height/2, salgado.width/3, salgado.height/3, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Olhos
+                ctx.fillStyle = '#333';
+                ctx.beginPath();
+                ctx.arc(salgado.x + salgado.width/2 - 5, salgado.y + salgado.height/2 - 5, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.beginPath();
+                ctx.arc(salgado.x + salgado.width/2 + 5, salgado.y + salgado.height/2 - 5, 3, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Sorriso
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.arc(salgado.x + salgado.width/2, salgado.y + salgado.height/2 + 5, 5, 0.2, Math.PI - 0.2);
+                ctx.stroke();
+            }
+            
+            // Desenhar obstáculos
+            function drawObstacles() {
+                obstacles.forEach(obstacle => {
+                    // Desenha o obstáculo como um forno/tijolo
+                    ctx.fillStyle = '#c1392d';
+                    ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+                    
+                    // Detalhes do forno
+                    ctx.fillStyle = '#a53226';
+                    for (let i = 0; i < obstacle.height; i += 10) {
+                        ctx.fillRect(obstacle.x, obstacle.y + i, obstacle.width, 5);
+                    }
+                });
+            }
+            
+            // Atualizar o jogo
+            function update() {
+                // Limpar o canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Desenhar fundo
+                ctx.fillStyle = '#f7f7f7';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Aplicar gravidade ao salgado
+                salgado.velocityY += gravity;
+                salgado.y += salgado.velocityY;
+                
+                // Verificar colisão com o chão
+                if (salgado.y > canvas.height - groundHeight - salgado.height) {
+                    salgado.y = canvas.height - groundHeight - salgado.height;
+                    salgado.velocityY = 0;
+                    salgado.jumping = false;
+                }
+                
+                // Gerar obstáculos
+                if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - 200) {
+                    const obstacleHeight = Math.random() * (obstacleMaxHeight - obstacleMinHeight) + obstacleMinHeight;
+                    obstacles.push({
+                        x: canvas.width,
+                        y: canvas.height - groundHeight - obstacleHeight,
+                        width: obstacleWidth,
+                        height: obstacleHeight
+                    });
+                }
+                
+                // Mover obstáculos
+                obstacles.forEach((obstacle, index) => {
+                    obstacle.x -= gameSpeed;
+                    
+                    // Verificar colisão
+                    if (
+                        salgado.x < obstacle.x + obstacle.width &&
+                        salgado.x + salgado.width > obstacle.x &&
+                        salgado.y < obstacle.y + obstacle.height &&
+                        salgado.y + salgado.height > obstacle.y
+                    ) {
+                        gameOver = true;
+                    }
+                    
+                    // Remover obstáculos que saíram da tela
+                    if (obstacle.x + obstacle.width < 0) {
+                        obstacles.splice(index, 1);
+                        score++;
+                        scoreDisplay.textContent = `Pontuação: ${score}`;
+                    }
+                });
+                
+                // Desenhar elementos
+                drawGround();
+                drawSalgado();
+                drawObstacles();
+                
+                // Verificar fim de jogo
+                if (gameOver) {
+                    cancelAnimationFrame(animationId);
+                    gameOverlay.querySelector('.game-title').textContent = 'Fim de Jogo!';
+                    gameOverlay.querySelector('.game-instructions').textContent = `Sua pontuação: ${score}. Clique para jogar novamente!`;
+                    gameOverlay.classList.remove('hidden');
+                    return;
+                }
+                
+                // Continuar animação
+                animationId = requestAnimationFrame(update);
+            }
+            
+            // Pular
+            function jump() {
+                if (!salgado.jumping) {
+                    salgado.velocityY = -jumpForce;
+                    salgado.jumping = true;
+                }
+            }
+            
+            // Iniciar jogo
+            function startGame() {
+                salgado = {
+                    x: 50,
+                    y: canvas.height - groundHeight - salgadoHeight,
+                    width: salgadoWidth,
+                    height: salgadoHeight,
+                    velocityY: 0,
+                    jumping: false
+                };
+                
+                obstacles = [];
+                score = 0;
+                gameOver = false;
+                scoreDisplay.textContent = `Pontuação: ${score}`;
+                
+                gameOverlay.classList.add('hidden');
+                gameStarted = true;
+                
+                update();
+            }
+            
+            // Event listeners
+            startButton.addEventListener('click', startGame);
+            
+            canvas.addEventListener('click', function() {
+                if (!gameStarted) {
+                    startGame();
+                } else {
+                    jump();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.code === 'Space' && gameStarted) {
+                    e.preventDefault();
+                    jump();
+                }
+            });
         });
     </script>
 </body>
